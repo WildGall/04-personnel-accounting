@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +19,9 @@ namespace _04_personnel_accounting
 
             while (isWorkProgram)
             {
-                Console.Write("\n1) Добавить досье. \n2) Вывести всё досье. \n3) Удалить Досье. \n4) Выход");
+                Console.Write($"\n{AddDossier}) Добавить досье. \n{OutputAllDossiers}) Вывести всё досье. \n{DeleteDossier}) Удалить Досье. \n{Exit}) Выход");
                 Console.Write("\nВведите номер команды: ");
-                int userInput = Convert.ToInt32(Console.ReadLine());
+                int.TryParse(Console.ReadLine(), out int userInput);
 
                 switch (userInput)
                 {
@@ -37,7 +37,7 @@ namespace _04_personnel_accounting
                     case Exit:
                         isWorkProgram = false;
                         break;
-                }
+                }               
             }
         }
 
@@ -47,15 +47,24 @@ namespace _04_personnel_accounting
             string userInputSurname = Console.ReadLine();
             Console.Write("Введите Должность: ");
             string userInputPosition = Console.ReadLine();
-            dossiers.Add(userInputSurname, userInputPosition);
-            Console.Write("Досье Добавлено!");
+            string userPosition = userInputPosition;
+
+            if (dossiers.TryGetValue(userInputSurname,out userInputPosition))
+            {
+                Console.Write("Такое досье уже существует.");
+            }
+            else
+            {
+                Console.Write("Досье добавлено");
+                dossiers.Add(userInputSurname, userPosition);
+            }            
         }
 
         static void OutputData(Dictionary<string, string> dossiers)
         {
-            foreach (var allDossiers in dossiers)
+            foreach (var dossier in dossiers)
             {
-                Console.WriteLine($"{allDossiers.Key} - {allDossiers.Value}");
+                Console.WriteLine($"{dossier.Key} - {dossier.Value}");
             }
         }
 
